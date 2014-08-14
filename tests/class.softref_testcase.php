@@ -24,8 +24,6 @@
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("imagemap_wizard")."classes/class.tx_imagemapwizard_softrefproc.php");
-
 class softref_testcase extends tx_phpunit_testcase {
 
 	function test_emptySoftRefsWork() {

@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author	Tolleiv Nietsch <info@tolleiv.de>
  */
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/view/class.tx_imagemapwizard_view_abstract.php');
-
 
 class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 

@@ -28,9 +28,6 @@
  * @author	Tolleiv Nietsch <info@tolleiv.de>
  */
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_mapper.php');
-
-
 class tx_imagemapwizard_softrefproc extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 
 	/**

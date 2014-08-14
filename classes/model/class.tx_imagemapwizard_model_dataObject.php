@@ -30,9 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author    Tolleiv Nietsch <info@tolleiv.de>
  */
 
-require_once(ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_typo3env.php');
-require_once(ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_mapper.php');
-
 class tx_imagemapwizard_model_dataObject {
     protected $row;
     protected $liveRow;
@@ -60,12 +57,12 @@ class tx_imagemapwizard_model_dataObject {
             throw new Exception('field (' . $field . ') unknow for table in TCA');
         }
         $this->mapField = $field;
-        $this->row = t3lib_BEfunc::getRecordWSOL($table, intval($uid));
+        $this->row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, intval($uid));
         if ($currentValue) {
             $this->useCurrentData($currentValue);
         }
         $this->liveRow = $this->row;
-        t3lib_BEfunc::fixVersioningPid($table, $this->liveRow);
+		\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $this->liveRow);
         $this->map = GeneralUtility::makeInstance("tx_imagemapwizard_model_mapper")->map2array($this->getFieldValue($this->mapField));
         $this->backPath = tx_imagemapwizard_model_typo3env::getBackPath();
     }

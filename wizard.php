@@ -31,8 +31,6 @@ define('TYPO3_MOD_PATH','../typo3conf/ext/imagemap_wizard/');
 $BACK_PATH = '../../../typo3/';
 require($BACK_PATH.'init.php');
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard').'classes/controller/class.tx_imagemapwizard_controller_wizard.php');
-
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
 $GLOBALS['LANG']->includeLLFile('EXT:imagemap_wizard/locallang.xml');
 

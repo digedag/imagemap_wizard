@@ -78,8 +78,8 @@ class tx_imagemapwizard_wizicon {
 		if (version_compare(TYPO3_version, '4.6.0', '<')) {
 			$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 		} else {
-			/** @var $localizationParser t3lib_l10n_parser_Llxml */
-			$localizationParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_l10n_parser_Llxml');
+			/** @var $localizationParser TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser */
+			$localizationParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser');
 			$LOCAL_LANG = $localizationParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
 		}
 		return $LOCAL_LANG;

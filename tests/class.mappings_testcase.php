@@ -148,7 +148,6 @@ class mappings_testcase extends tx_phpunit_testcase {
 	}
 
 	function setUp() {
-		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard').'classes/model/class.tx_imagemapwizard_model_mapper.php');
 		$this->mapper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_imagemapwizard_model_mapper');
 	}
 	function tearDown() {

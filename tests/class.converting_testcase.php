@@ -24,8 +24,6 @@
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard').'classes/model/class.tx_imagemapwizard_model_mapper.php');
-
 class converting_testcase extends tx_phpunit_testcase {
 
 	public function test_basicMap2ArrayWorks() {

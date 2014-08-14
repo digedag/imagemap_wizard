@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author	Tolleiv Nietsch <info@tolleiv.de>
  */
 
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_dataObject.php');
-
 class tx_imagemapwizard_controller_wizard {
 	protected $view;
 	protected $context = 'wizard';
@@ -91,7 +89,7 @@ class tx_imagemapwizard_controller_wizard {
 		$this->params['field'] = GeneralUtility::_GP('field');
 		$this->params['uid'] = GeneralUtility::_GP('uid');
 		$this->params['fieldConf'] = unserialize(stripslashes((GeneralUtility::_GP('config'))));
-		$this->params['pObj'] = GeneralUtility::makeInstance('t3lib_TCEforms');
+		$this->params['pObj'] = GeneralUtility::makeInstance('TYPO3\CMS\Backend\Form\FormEngine');
 		$this->params['pObj']->initDefaultBEMode();
 		$this->params['itemFormElName'] = GeneralUtility::_GP('formField');
 
@@ -119,7 +117,6 @@ class tx_imagemapwizard_controller_wizard {
 	}
 
 	protected function initView() {
-		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/view/class.tx_imagemapwizard_view_' . $this->context . '.php');
 		$this->view = GeneralUtility::makeInstance('tx_imagemapwizard_view_' . $this->context);
 		$this->view->init($this->context);
 	}
