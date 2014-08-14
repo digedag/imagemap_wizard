@@ -160,12 +160,7 @@ class tx_imagemapwizard_controller_wizard {
 	 * @return tx_imagemapwizard_model_dataObject
 	 */
 	protected function makeDataObj($table, $field, $uid, $value) {
-		if (version_compare(TYPO3_version, '4.3.0', '<')) {
-			$dataClass = GeneralUtility::makeInstanceClassName('tx_imagemapwizard_model_dataObject');
-			$data = new $dataClass($table, $field, $uid, $value);
-		} else {
-			$data = GeneralUtility::makeInstance('tx_imagemapwizard_model_dataObject', $table, $field, $uid, $value);
-		}
+		$data = GeneralUtility::makeInstance('tx_imagemapwizard_model_dataObject', $table, $field, $uid, $value);
 		return $data;
 	}
 }

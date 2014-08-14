@@ -73,13 +73,9 @@ class tx_imagemapwizard_wizicon {
 	 */
 	function includeLocalLang() {
 		$llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'locallang.xml';
-		if (version_compare(TYPO3_version, '4.6.0', '<')) {
-			$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
-		} else {
-			/** @var $localizationParser TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser */
-			$localizationParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser');
-			$LOCAL_LANG = $localizationParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
-		}
+		/** @var $localizationParser TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser */
+		$localizationParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser');
+		$LOCAL_LANG = $localizationParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
 		return $LOCAL_LANG;
 	}
 }

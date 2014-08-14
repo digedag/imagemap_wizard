@@ -157,17 +157,7 @@ abstract class tx_imagemapwizard_view_abstract {
 	 * @return string HTML-img-tag
 	 */
 	protected function getIcon($skinPath, $attr = '') {
-
-		if (version_compare(TYPO3_version, '4.4', '<')) {
-			$source = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $skinPath);
-			$match = array();
-			if (preg_match('/src="(\S+)"/', $source, $match) && !is_file($match[1])) {
-				$source = 'src ="' . $this->getTplSubpath() . $skinPath . '"';
-			}
-			return "<img " . $source . ($attr ? ' ' . $attr : '') . " />";
-		} else {
-			return '<span ' . $attr . '>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(self::$icon2Sprite[$skinPath]) . '</span>';
-		}
+		return '<span ' . $attr . '>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(self::$icon2Sprite[$skinPath]) . '</span>';
 	}
 
 	/**
