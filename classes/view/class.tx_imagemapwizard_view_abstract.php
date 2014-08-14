@@ -65,16 +65,16 @@ abstract class tx_imagemapwizard_view_abstract {
 	/**
 	 * Sets the relates Data-Model-Object
 	 *
-	 * @param tx_imagemapwizard_dataObject Data-Object
+	 * @param \tx_imagemapwizard_model_dataObject $data Data-Object
 	 */
 	public function setData(tx_imagemapwizard_model_dataObject $data) {
 		$this->data = $data;
 	}
 
 	/**
-	 * Collect required Javascript-Resoucres
+ 	 * Collect required JavaScript resources
 	 *
-	 * @param string Filename
+	 * @param $file
 	 */
 	protected function addExternalJS($file) {
 		if (!in_array($file, $this->jsFiles)) {
@@ -83,9 +83,9 @@ abstract class tx_imagemapwizard_view_abstract {
 	}
 
 	/**
-	 * Collect required Inline-Javascript.
+	 * Collect required inline JavaScript.
 	 *
-	 * @param string Javascript-Block
+	 * @param string $js JavaScript-Block
 	 */
 	protected function addInlineJS($js) {
 		$this->inlineJs .= "\n\n" . $js;
@@ -93,9 +93,9 @@ abstract class tx_imagemapwizard_view_abstract {
 
 
 	/**
-	 * Collect required CSS-Resoucres
+	 * Collect required CSS-Resources
 	 *
-	 * @param string Filename
+	 * @param string $file Filename
 	 */
 	protected function addExternalCSS($file) {
 		if (!in_array($file, $this->cssFiles)) {
@@ -104,11 +104,13 @@ abstract class tx_imagemapwizard_view_abstract {
 	}
 
 	protected function getExternalJSIncludes() {
-		$extPath = tx_imagemapwizard_model_typo3env::getExtBackPath('imagemap_wizard');
+		$extBackPath = tx_imagemapwizard_model_typo3env::getExtBackPath('imagemap_wizard');
+
+		$ret = '';
 
 		if (is_array($this->jsFiles)) {
 			foreach ($this->jsFiles as $file) {
-				$ret .= "\n<script type=\"text/javascript\" src=\"" . $backPath . $extPath . $file . "\"></script>";
+				$ret .= "\n<script type=\"text/javascript\" src=\"" . $extBackPath . $file . "\"></script>";
 			}
 		}
 		return $ret;
@@ -119,11 +121,11 @@ abstract class tx_imagemapwizard_view_abstract {
 	}
 
 	protected function getExternalCSSIncludes() {
-		$backPath = tx_imagemapwizard_model_typo3env::getBackPath();
-		$extPath = str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard'));
+		$extBackPath = tx_imagemapwizard_model_typo3env::getExtBackPath('imagemap_wizard');
+		$ret = '';
 		if (is_array($this->cssFiles)) {
 			foreach ($this->cssFiles as $file) {
-				$ret .= "\n<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $backPath . $extPath . $file . "\" />";
+				$ret .= "\n<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $extBackPath . $file . "\" />";
 			}
 		}
 		return $ret;

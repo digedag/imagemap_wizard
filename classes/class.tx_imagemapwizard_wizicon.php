@@ -55,7 +55,7 @@ class tx_imagemapwizard_wizicon {
 	 */
 	function getCommonItemCount($list) {
 		if (!is_array($list)) {
-			return;
+			return FALSE;
 		}
 		reset($list);
 		$num = 0;

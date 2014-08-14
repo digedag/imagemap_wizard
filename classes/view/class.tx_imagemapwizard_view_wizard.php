@@ -34,6 +34,7 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 	protected $doc;
 
 	public $content;
+	public $params;
 
 	/**
 	 * Just initialize the View, fill internal variables etc...

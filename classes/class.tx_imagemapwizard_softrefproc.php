@@ -41,7 +41,7 @@ class tx_imagemapwizard_softrefproc extends \TYPO3\CMS\Core\Database\SoftReferen
 	 * @param string $spKey
 	 * @param array $spParams
 	 * @param string $structurePath
-	 * @return array the Array which describes what references we found and where ...
+	 * @return array the array which describes what references we found and where ...
 	 */
 
 	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {

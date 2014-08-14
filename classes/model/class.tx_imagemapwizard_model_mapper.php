@@ -220,7 +220,7 @@ class tx_imagemapwizard_model_mapper {
 	/**
 	 * Check whether a node has any attributes or not
 	 *
-	 * @param SimpleXMLNode node
+	 * @param \SimpleXMLNode $node
 	 * @return Boolean
 	 */
 	protected static function nodeHasAttributes($node) {
