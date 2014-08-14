@@ -53,10 +53,3 @@ class tx_imagemapwizard_parser extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 		return str_replace(' usemap="#***IMAGEMAP_USEMAP***"', '', $content);
 	}
 }
-
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/imagemap_wizard/classes/class.tx_imagemapwizard_parser.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/imagemap_wizard/classes/class.tx_imagemapwizard_parser.php']);
-}
-
-?>

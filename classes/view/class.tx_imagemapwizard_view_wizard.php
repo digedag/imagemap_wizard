@@ -162,8 +162,3 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 		return implode(',', $ret);
 	}
 }
-
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/imagemap_wizard/classes/view/class.tx_imagemapwizard_view_wizard.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/imagemap_wizard/classes/view/class.tx_imagemapwizard_view_wizard.php']);
-}
-?>
