@@ -27,8 +27,8 @@
  * @author	Tolleiv Nietsch <info@tolleiv.de>
  */
 
-require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_typo3env.php');
-require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/view/class.tx_imagemapwizard_view_abstract.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_typo3env.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/view/class.tx_imagemapwizard_view_abstract.php');
 
 
 class tx_imagemapwizard_view_tceform extends tx_imagemapwizard_view_abstract {

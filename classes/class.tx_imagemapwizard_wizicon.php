@@ -35,7 +35,7 @@ class tx_imagemapwizard_wizicon {
 		$LL = $this->includeLocalLang();
 
 		$newWizardItem['common_imagemap'] = array(
-			'icon' => t3lib_extMgm::extRelPath('imagemap_wizard') . 'tt_content_imagemap.gif',
+			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('imagemap_wizard') . 'tt_content_imagemap.gif',
 			'title' => $GLOBALS['LANG']->getLLL('imagemap.title', $LL),
 			'description' => $GLOBALS['LANG']->getLLL('imagemap.description', $LL),
 			'tt_content_defValues.' => array(
@@ -74,12 +74,12 @@ class tx_imagemapwizard_wizicon {
 	 * @return array	The LOCAL_LANG array
 	 */
 	function includeLocalLang() {
-		$llFile = t3lib_extMgm::extPath('imagemap_wizard') . 'locallang.xml';
+		$llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'locallang.xml';
 		if (version_compare(TYPO3_version, '4.6.0', '<')) {
-			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
+			$LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLXMLfile($llFile, $GLOBALS['LANG']->lang);
 		} else {
 			/** @var $localizationParser t3lib_l10n_parser_Llxml */
-			$localizationParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
+			$localizationParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_l10n_parser_Llxml');
 			$LOCAL_LANG = $localizationParser->getParsedData($llFile, $GLOBALS['LANG']->lang);
 		}
 		return $LOCAL_LANG;

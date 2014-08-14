@@ -1,6 +1,6 @@
 <?php
 
-t3lib_div::loadTCA('tt_content');
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 
 $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][] = array(
     0 => 'LLL:EXT:imagemap_wizard/locallang.xml:imagemap.title',
@@ -29,25 +29,25 @@ $tempColumns = array (
 		),
 	),
 );
-t3lib_extMgm::addTCAcolumns("tt_content",$tempColumns,1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("tt_content",$tempColumns,1);
 
 $imwizardConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['imagemap_wizard']);
 
 $GLOBALS['TCA']['tt_content']['types']['imagemap_wizard'] = $GLOBALS['TCA']['tt_content']['types']['image'];
-t3lib_extMgm::addToAllTCAtypes('tt_content','tx_imagemapwizard_links', ($imwizardConf['allTTCtypes'] ? '' : 'imagemap_wizard') ,'after:image');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content','tx_imagemapwizard_links', ($imwizardConf['allTTCtypes'] ? '' : 'imagemap_wizard') ,'after:image');
 // CSH context sensitive help
-t3lib_extMgm::addLLrefForTCAdescr('tt_content','EXT:imagemap_wizard/locallang_csh_ttc.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tt_content','EXT:imagemap_wizard/locallang_csh_ttc.xml');
 
 if (TYPO3_MODE=='BE')    {
-    $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['tx_imagemapwizard_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'classes/class.tx_imagemapwizard_wizicon.php';
+    $GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['tx_imagemapwizard_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'classes/class.tx_imagemapwizard_wizicon.php';
 }
 if(version_compare(TYPO3_version,'4.4','>')) {
 	$icons = array(
-		'redo' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/arrow_redo.png',
-		'link' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/link_edit.png',
-		'zoomin' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/magnifier_zoom_in.png',
-		'zoomout' => t3lib_extMgm::extRelPath($_EXTKEY) . 'res/magnifier_zoom_out.png',
+		'redo' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/arrow_redo.png',
+		'link' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/link_edit.png',
+		'zoomin' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/magnifier_zoom_in.png',
+		'zoomout' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'res/magnifier_zoom_out.png',
 	);
-	t3lib_SpriteManager::addSingleIcons($icons, $_EXTKEY);
+	\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $_EXTKEY);
 }
 ?>

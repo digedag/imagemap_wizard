@@ -22,12 +22,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(t3lib_extMgm::extPath("imagemap_wizard")."classes/class.tx_imagemapwizard_softrefproc.php");
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath("imagemap_wizard")."classes/class.tx_imagemapwizard_softrefproc.php");
 
 class softref_testcase extends tx_phpunit_testcase {
 
 	function test_emptySoftRefsWork() {
-		$parser = t3lib_div::makeInstance("tx_imagemapwizard_softrefproc");
+		$parser = GeneralUtility::makeInstance("tx_imagemapwizard_softrefproc");
 		$emptyStrings = array('','<map></map>');
 
 		foreach($emptyStrings as $str) {
@@ -39,7 +41,7 @@ class softref_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_basicSoftRefsWork() {
-		$parser = t3lib_div::makeInstance("tx_imagemapwizard_softrefproc");
+		$parser = GeneralUtility::makeInstance("tx_imagemapwizard_softrefproc");
 		$mapContent = $this->_demoMap1();
 		$result = $parser->findRef('', '', '', $mapContent, '', '', '');
 
@@ -53,7 +55,7 @@ class softref_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_multipleSoftRefsWork() {
-		$parser = t3lib_div::makeInstance("tx_imagemapwizard_softrefproc");
+		$parser = GeneralUtility::makeInstance("tx_imagemapwizard_softrefproc");
 		$mapContent = $this->_demoMap2();
 		$result = $parser->findRef('', '', '', $mapContent, '', '', '');
 

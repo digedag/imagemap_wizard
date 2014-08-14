@@ -21,6 +21,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class/Function encapsulates TYPO3 enviromental operations
  *
@@ -42,10 +44,10 @@ class tx_imagemapwizard_model_typo3env {
 		/* local includes otherwise XCLASSES might be lost due to extension load order */
 
 		$tca = $GLOBALS['TCA'];
-		$GLOBALS['TT'] = t3lib_div::makeInstance('t3lib_timeTrack');
+		$GLOBALS['TT'] = GeneralUtility::makeInstance('TYPO3\CMS\Core\TimeTracker\TimeTracker');
 		$GLOBALS['TT']->start();
 
-		$GLOBALS['TSFE'] = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $pid, '0', 0, '', '', '', '');
+		$GLOBALS['TSFE'] = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'], $pid, '0', 0, '', '', '', '');
 
 		$GLOBALS['TSFE']->config['config']['language'] = $_GET['L'];
 		$GLOBALS['TSFE']->id = $pid;
@@ -55,13 +57,13 @@ class tx_imagemapwizard_model_typo3env {
 		$GLOBALS['TYPO3_DB']->debugOutput = false;
 		$GLOBALS['TSFE']->initLLVars();
 		$GLOBALS['TSFE']->initFEuser();
-		$GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
 		//$GLOBALS['TSFE']->sys_page->init($GLOBALS['TSFE']->showHiddenPage);
 		$GLOBALS['TSFE']->sys_page->init(true);
 		$page = $GLOBALS['TSFE']->sys_page->getPage($pid);
 		if (count($page) == 0 && $GLOBALS['BE_USER']->workspace != 0) {
 			$GLOBALS['TSFE']->sys_page->versioningPreview = TRUE;
-			$wsRec = t3lib_beFunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $pid);
+			$wsRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, 'pages', $pid);
 			$page = $GLOBALS['TSFE']->sys_page->getPage($wsRec['uid']);
 			if (count($page) == 0) {
 				$GLOBALS['TYPO3_DB']->debugOutput = $sqlDebug;
@@ -182,7 +184,7 @@ class tx_imagemapwizard_model_typo3env {
 	 *
 	 */
 	protected function initMyBE_USER() {
-		$this->BE_USER = t3lib_div::makeInstance('t3lib_tsfeBeUserAuth'); // New backend user object
+		$this->BE_USER = GeneralUtility::makeInstance('TYPO3\CMS\Backend\FrontendBackendUserAuthentication'); // New backend user object
 		$this->BE_USER->userTS_dontGetCached = 1;
 		$this->BE_USER->OS = TYPO3_OS;
 		$this->BE_USER->setBeUserByUid($GLOBALS['BE_USER']->user['uid']);
@@ -225,7 +227,7 @@ class tx_imagemapwizard_model_typo3env {
 	 * @return string	the Extensions BACKPATH
 	 */
 	public static function getExtBackPath($extKey = 'imagemap_wizard') {
-		return self::getBackPath() . str_replace(PATH_site, '', t3lib_extMgm::extPath($extKey));
+		return self::getBackPath() . str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extKey));
 	}
 
 	/**

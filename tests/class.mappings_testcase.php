@@ -30,7 +30,7 @@ class mappings_testcase extends tx_phpunit_testcase {
 	protected $mapper;
 
 	function test_creatingEmptyMap() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$cObj->expects($this->never())->method('typoLink');
 
 		$supposedOutput = '';
@@ -39,13 +39,13 @@ class mappings_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_emptyMapNameDoesnTHurt() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$input = '<map></map>';
 		$this->assertEquals('',$this->mapper->generateMap($cObj,'',$input),'Empty Map-Name inputs are not processed as supposed');
 	}
 
 	function test_creatingValidMapNames() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$cObj->expects($this->never())->method('typoLink');
 
 		$strings = array('test name','test näme','ÄÖÜ..','1234','おはようございます');
@@ -57,7 +57,7 @@ class mappings_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_creatingSimpleRectMap() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$cObj->expects($this->atLeastOnce())->method('typoLink')->will($this->returnValue('<a href="http://www.foo.org" title="tt">text</a>'));
 
 		$input = '<map><area shape="rect">1</area></map>';
@@ -65,7 +65,7 @@ class mappings_testcase extends tx_phpunit_testcase {
 		$this->assertEquals($output,$this->mapper->generateMap($cObj,'test',$input),'Generator Output looks not as supposed');
 	}
 	function test_creatingMapGeneratorKeepsIndividualAttributes() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$cObj->expects($this->atLeastOnce())->method('typoLink')->will($this->returnValue('<a href="http://www.foo.org" title="tt">text</a>'));
 
 		$input = '<map><area shape="rect" title="individual title" xyz="1">1</area></map>';
@@ -74,7 +74,7 @@ class mappings_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_creatingMapRemovesEmptyAttributes() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$cObj->expects($this->atLeastOnce())->method('typoLink')->will($this->returnValue('<a href="http://www.foo.org" title="tt">text</a>'));
 
 		$input = '<map><area shape="rect" title="individual title" xyz="">1</area></map>';
@@ -83,7 +83,7 @@ class mappings_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_creatingMapGeneratorAcceptsAttributeWhitelist() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$cObj->expects($this->atLeastOnce())->method('typoLink')->will($this->returnValue('<a href="http://www.foo.org" title="tt">text</a>'));
 
 		$whitelist = array('href','shape');
@@ -94,7 +94,7 @@ class mappings_testcase extends tx_phpunit_testcase {
 	}
 
 	function test_creatingMapUsingHrefAttrIfNoValueExists() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$cObj->expects($this->atLeastOnce())->method('typoLink')->will($this->returnValue('<a href="http://www.foo.org">text</a>'));
 
 		//stupid href-value but this proveds that the typoLink-function is really used
@@ -105,7 +105,7 @@ class mappings_testcase extends tx_phpunit_testcase {
 
 	// due to issue 2525
 	function test_xhtmlSwitchWorks() {
-		$cObj = $this->getMock('tslib_cObj', array('typoLink','LOAD_REGISTER'));
+		$cObj = $this->getMock('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer', array('typoLink','LOAD_REGISTER'));
 		$input = '<map><area href="1" shape="rect" /></map>';
 		$name = "testname";
 		$htmlOutput = '<map name="'.$name.'"><area href="1" shape="rect" /></map>';
@@ -148,8 +148,8 @@ class mappings_testcase extends tx_phpunit_testcase {
 	}
 
 	function setUp() {
-		require_once(t3lib_extMgm::extPath('imagemap_wizard').'classes/model/class.tx_imagemapwizard_model_mapper.php');
-		$this->mapper = t3lib_div::makeInstance('tx_imagemapwizard_model_mapper');
+		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard').'classes/model/class.tx_imagemapwizard_model_mapper.php');
+		$this->mapper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_imagemapwizard_model_mapper');
 	}
 	function tearDown() {
 		unset($this->mapper);

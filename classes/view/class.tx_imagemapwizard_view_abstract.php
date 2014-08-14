@@ -53,7 +53,7 @@ abstract class tx_imagemapwizard_view_abstract {
 	 * Just initialize the View, fill internal variables etc...
 	 */
 	public function init() {
-		$this->id = "imagemap" . t3lib_div::shortMD5(rand(1, 100000));
+		$this->id = "imagemap" . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(rand(1, 100000));
 		$this->jsFiles = array();
 		$this->cssFiles = array();
 	}
@@ -120,7 +120,7 @@ abstract class tx_imagemapwizard_view_abstract {
 
 	protected function getExternalCSSIncludes() {
 		$backPath = tx_imagemapwizard_model_typo3env::getBackPath();
-		$extPath = str_replace(PATH_site, '', t3lib_extMgm::extPath('imagemap_wizard'));
+		$extPath = str_replace(PATH_site, '', \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard'));
 		if (is_array($this->cssFiles)) {
 			foreach ($this->cssFiles as $file) {
 				$ret .= "\n<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $backPath . $extPath . $file . "\" />";
@@ -131,7 +131,7 @@ abstract class tx_imagemapwizard_view_abstract {
 
 	protected function renderTemplate($file) {
 		ob_start();
-		include(t3lib_extMgm::extPath('imagemap_wizard') . 'templates/' . $file);
+		include(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'templates/' . $file);
 		$ret = ob_get_contents();
 		ob_end_clean();
 		return $ret;
@@ -159,14 +159,14 @@ abstract class tx_imagemapwizard_view_abstract {
 	protected function getIcon($skinPath, $attr = '') {
 
 		if (version_compare(TYPO3_version, '4.4', '<')) {
-			$source = t3lib_iconWorks::skinImg($this->doc->backPath, $skinPath);
+			$source = \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $skinPath);
 			$match = array();
 			if (preg_match('/src="(\S+)"/', $source, $match) && !is_file($match[1])) {
 				$source = 'src ="' . $this->getTplSubpath() . $skinPath . '"';
 			}
 			return "<img " . $source . ($attr ? ' ' . $attr : '') . " />";
 		} else {
-			return '<span ' . $attr . '>' . t3lib_iconWorks::getSpriteIcon(self::$icon2Sprite[$skinPath]) . '</span>';
+			return '<span ' . $attr . '>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(self::$icon2Sprite[$skinPath]) . '</span>';
 		}
 	}
 

@@ -21,13 +21,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class/Function provides basic action for the Wizard-Form
  *
  * @author	Tolleiv Nietsch <info@tolleiv.de>
  */
 
-require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_dataObject.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_dataObject.php');
 
 class tx_imagemapwizard_controller_wizard {
 	protected $view;
@@ -48,7 +50,7 @@ class tx_imagemapwizard_controller_wizard {
 	 * Default action just renders the Wizard with the default view.
 	 */
 	protected function wizardAction() {
-		$params = t3lib_div::_GP('P');
+		$params = GeneralUtility::_GP('P');
 		$currentValue = $GLOBALS['BE_USER']->getSessionData('imagemap_wizard.value');
 		// @todo use-Flex-DataObject if needed
 		try {
@@ -76,7 +78,7 @@ class tx_imagemapwizard_controller_wizard {
 
 		$this->view->setFormName($this->params['itemFormElName']);
 		$this->view->setWizardConf($this->params['fieldConf']['config']['wizards']);
-		t3lib_div::loadTCA($this->params['table']);
+		GeneralUtility::loadTCA($this->params['table']);
 
 		return $this->view->renderContent();
 	}
@@ -85,15 +87,15 @@ class tx_imagemapwizard_controller_wizard {
 	 *
 	 */
 	protected function tceformAjaxAction() {
-		$this->params['table'] = t3lib_div::_GP('table');
-		$this->params['field'] = t3lib_div::_GP('field');
-		$this->params['uid'] = t3lib_div::_GP('uid');
-		$this->params['fieldConf'] = unserialize(stripslashes((t3lib_div::_GP('config'))));
-		$this->params['pObj'] = t3lib_div::makeInstance('t3lib_TCEforms');
+		$this->params['table'] = GeneralUtility::_GP('table');
+		$this->params['field'] = GeneralUtility::_GP('field');
+		$this->params['uid'] = GeneralUtility::_GP('uid');
+		$this->params['fieldConf'] = unserialize(stripslashes((GeneralUtility::_GP('config'))));
+		$this->params['pObj'] = GeneralUtility::makeInstance('t3lib_TCEforms');
 		$this->params['pObj']->initDefaultBEMode();
-		$this->params['itemFormElName'] = t3lib_div::_GP('formField');
+		$this->params['itemFormElName'] = GeneralUtility::_GP('formField');
 
-		$this->forceValue = t3lib_div::_GP('value');
+		$this->forceValue = GeneralUtility::_GP('value');
 		$GLOBALS['BE_USER']->setAndSaveSessionData('imagemap_wizard.value', $this->forceValue);
 		echo $this->tceformAction();
 	}
@@ -111,14 +113,14 @@ class tx_imagemapwizard_controller_wizard {
 	 * Determine context
 	 */
 	protected function initContext($forceContext = NULL) {
-		$reqContext = $forceContext ? $forceContext : t3lib_div::_GP('context');
+		$reqContext = $forceContext ? $forceContext : GeneralUtility::_GP('context');
 		$this->context = ($reqContext == 'tceform') ? 'tceform' : 'wizard';
-		$this->ajax = (t3lib_div::_GP('ajax') == '1');
+		$this->ajax = (GeneralUtility::_GP('ajax') == '1');
 	}
 
 	protected function initView() {
-		require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/view/class.tx_imagemapwizard_view_' . $this->context . '.php');
-		$this->view = t3lib_div::makeInstance('tx_imagemapwizard_view_' . $this->context);
+		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/view/class.tx_imagemapwizard_view_' . $this->context . '.php');
+		$this->view = GeneralUtility::makeInstance('tx_imagemapwizard_view_' . $this->context);
 		$this->view->init($this->context);
 	}
 
@@ -130,7 +132,7 @@ class tx_imagemapwizard_controller_wizard {
 	 * @param	Object		fobj
 	 * @return	String		HTMLCode with form-field
 	 */
-	public function renderForm($PA, t3lib_TCEforms $fobj) {
+	public function renderForm($PA, \TYPO3\CMS\Backend\Form\FormEngine $fobj) {
 		$GLOBALS['BE_USER']->setAndSaveSessionData('imagemap_wizard.value', NULL);
 		$this->params['table'] = $PA['table'];
 		if ($GLOBALS['TCA'][$PA['table']]['columns'][$PA['field']]['config']['type'] == 'flex') {
@@ -162,10 +164,10 @@ class tx_imagemapwizard_controller_wizard {
 	 */
 	protected function makeDataObj($table, $field, $uid, $value) {
 		if (version_compare(TYPO3_version, '4.3.0', '<')) {
-			$dataClass = t3lib_div::makeInstanceClassName('tx_imagemapwizard_model_dataObject');
+			$dataClass = GeneralUtility::makeInstanceClassName('tx_imagemapwizard_model_dataObject');
 			$data = new $dataClass($table, $field, $uid, $value);
 		} else {
-			$data = t3lib_div::makeInstance('tx_imagemapwizard_model_dataObject', $table, $field, $uid, $value);
+			$data = GeneralUtility::makeInstance('tx_imagemapwizard_model_dataObject', $table, $field, $uid, $value);
 		}
 		return $data;
 	}

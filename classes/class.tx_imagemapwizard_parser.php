@@ -27,9 +27,9 @@
  * @author	Tolleiv Nietsch <info@tolleiv.de>
  */
 
-require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_mapper.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_mapper.php');
 
-class tx_imagemapwizard_parser extends tslib_pibase {
+class tx_imagemapwizard_parser extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	public function applyImageMap($content, $conf) {
 		$xhtml = preg_match('/^xhtml/', $GLOBALS['TSFE']->config['config']['doctype']);
@@ -45,7 +45,7 @@ class tx_imagemapwizard_parser extends tslib_pibase {
 		$num = $this->cObj->getData('register:IMAGE_NUM_CURRENT', $this->cObj->data);
 		if ($num == 0) {
 			/* @var $converter tx_imagemapwizard_model_mapper */
-			$converter = t3lib_div::makeInstance('tx_imagemapwizard_model_mapper');
+			$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_imagemapwizard_model_mapper');
 			$mapname = $converter->createValidNameAttribute($mapname);
 			$map = $converter->generateMap($this->cObj, $mapname, $this->cObj->getData($conf['map.']['data'], $this->cObj->data), $attrlist, $xhtml, $conf, $num);
 			if (!$converter->isEmptyMap($map) || $this->cObj->getData('register:keepUsemapMarker', $this->cObj->data)) {

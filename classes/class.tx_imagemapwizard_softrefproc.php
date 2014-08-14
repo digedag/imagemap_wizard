@@ -28,10 +28,10 @@
  * @author	Tolleiv Nietsch <info@tolleiv.de>
  */
 
-require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_mapper.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_mapper.php');
 
 
-class tx_imagemapwizard_softrefproc extends t3lib_softrefproc {
+class tx_imagemapwizard_softrefproc extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 
 	/**
 	 * Just overrides the method which normally catches all softref-types
@@ -48,7 +48,7 @@ class tx_imagemapwizard_softrefproc extends t3lib_softrefproc {
 	 */
 
 	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {
-		$conv = t3lib_div::makeInstance("tx_imagemapwizard_model_mapper");
+		$conv = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("tx_imagemapwizard_model_mapper");
 		$data = $conv->map2array($content);
 		$idx = 0;
 

@@ -31,7 +31,7 @@ class tx_imagemapwizard_model_mapper {
 	/**
 	 * Generate a HTML-Imagemap using Typolink etc..
 	 *
-	 * @param tslib_cObj $cObj	 cObj cObject we used for genenerating the Links
+	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj	 cObj cObject we used for genenerating the Links
 	 * @param string $name	Name of the generated map
 	 * @param string $mapping	mapping the XML_pseudo-imagemap
 	 * @param string $whitelist
@@ -40,12 +40,12 @@ class tx_imagemapwizard_model_mapper {
 	 * @param int $mapNo
 	 * @return string the valid HTML-imagemap (hopefully valid)
 	 */
-	public function generateMap(tslib_cObj &$cObj, $name, $mapping = NULL, $whitelist = NULL, $xhtml = NULL, $conf = NULL, $mapNo = 0) {
+	public function generateMap(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$cObj, $name, $mapping = NULL, $whitelist = NULL, $xhtml = NULL, $conf = NULL, $mapNo = 0) {
 		$useWhitelist = is_array($whitelist);
 		if ($useWhitelist) {
 			$whitelist = array_flip($whitelist);
 		}
-		//$helper = t3lib_div::makeInstance('tx_imagemapwizard_mapconverter');
+		//$helper = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_imagemapwizard_mapconverter');
 		$mapArray = self::map2array($mapping);
 
 		$mapArray['@']['name'] = $this->createValidNameAttribute($name);
@@ -95,7 +95,7 @@ class tx_imagemapwizard_model_mapper {
 	public function createValidNameAttribute($value) {
 
 		if (!preg_match('/\S+/', $value)) {
-			$value = t3lib_div::shortMD5(rand(0, 100));
+			$value = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(rand(0, 100));
 		}
 		$name = preg_replace('/[^a-zA-Z0-9\-_]/i', '-', $value); // replace any special character with an dash
 		$name = preg_replace('/\-+$/', '', $name); // remove trailing dashes

@@ -2,10 +2,10 @@
 
 if (TYPO3_MODE=='BE') {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser']['tx_imagemapwizard'] = "EXT:imagemap_wizard/classes/class.tx_imagemapwizard_softrefproc.php:&tx_imagemapwizard_softrefproc";
-    //$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['tx_imagemapwizard_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'classes/class.tx_imagemapwizard_wizicon.php';
+    //$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['tx_imagemapwizard_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'classes/class.tx_imagemapwizard_wizicon.php';
 }
 
-	require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/controller/class.tx_imagemapwizard_controller_wizard.php');
+	require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/controller/class.tx_imagemapwizard_controller_wizard.php');
 	$typoscript = '
 		includeLibs.imagemap_wizard = EXT:imagemap_wizard/classes/class.tx_imagemapwizard_parser.php
 		tt_content.imagemap_wizard < tt_content.image
@@ -29,9 +29,9 @@ if (TYPO3_MODE=='BE') {
 		';
 	}
 
-	t3lib_extMgm::addTypoScript($_EXTKEY,'setup',$typoscript,'defaultContentRendering');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY,'setup',$typoscript,'defaultContentRendering');
 
-	t3lib_extMgm::addPageTSConfig('
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 		mod.wizards.newContentElement.wizardItems.common.elements.imagemap {
 			icon = EXT:imagemap_wizard/tt_content_imagemap.gif
 			title = LLL:EXT:imagemap_wizard/locallang.xml:imagemap.title

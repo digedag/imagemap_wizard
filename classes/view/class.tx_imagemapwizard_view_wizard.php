@@ -21,12 +21,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class/Function which renders the Witard-Form with the Data provided by the given Data-Object.
  *
  * @author	Tolleiv Nietsch <info@tolleiv.de>
  */
-require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/view/class.tx_imagemapwizard_view_abstract.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/view/class.tx_imagemapwizard_view_abstract.php');
 
 
 class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
@@ -38,7 +40,7 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 	 */
 	public function init() {
 		parent::init();
-		$this->doc = t3lib_div::makeInstance('noDoc');
+		$this->doc = GeneralUtility::makeInstance('noDoc');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form = $this->getFormTag();
@@ -48,7 +50,7 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 	 * Renders Content and prints it to the screen (or any active output buffer)
 	 */
 	public function renderContent() {
-		$this->params = t3lib_div::_GP('P');
+		$this->params = GeneralUtility::_GP('P');
 		// Setting field-change functions:
 		$fieldChangeFuncArr = $this->params['fieldChangeFunc'];
 		$update = '';
@@ -118,7 +120,7 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 			'mode' => 'wizard',
 			//'table' => 'tx_dummytable',
 			'field' => $fieldName,
-			'P[returnUrl]' => t3lib_div::linkThisScript(),
+			'P[returnUrl]' => GeneralUtility::linkThisScript(),
 			'P[formName]' => $this->id,
 			'P[itemName]' => $fieldName,
 			'P[fieldChangeFunc][focus]' => 'focus()',

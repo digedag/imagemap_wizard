@@ -21,14 +21,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Class/Function used to access the given Map-Data within Backend-Forms
  *
  * @author    Tolleiv Nietsch <info@tolleiv.de>
  */
 
-require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_typo3env.php');
-require_once(t3lib_extMgm::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_mapper.php');
+require_once(ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_typo3env.php');
+require_once(ExtensionManagementUtility::extPath('imagemap_wizard') . 'classes/model/class.tx_imagemapwizard_model_mapper.php');
 
 class tx_imagemapwizard_model_dataObject {
     protected $row;
@@ -52,7 +55,7 @@ class tx_imagemapwizard_model_dataObject {
             throw new Exception('table (' . $table . ') not defined in TCA');
         }
         $this->table = $table;
-        t3lib_div::loadTCA($this->table);
+        GeneralUtility::loadTCA($this->table);
         if (!in_array($field, array_keys($GLOBALS['TCA'][$table]['columns']))) {
             throw new Exception('field (' . $field . ') unknow for table in TCA');
         }
@@ -63,7 +66,7 @@ class tx_imagemapwizard_model_dataObject {
         }
         $this->liveRow = $this->row;
         t3lib_BEfunc::fixVersioningPid($table, $this->liveRow);
-        $this->map = t3lib_div::makeInstance("tx_imagemapwizard_model_mapper")->map2array($this->getFieldValue($this->mapField));
+        $this->map = GeneralUtility::makeInstance("tx_imagemapwizard_model_mapper")->map2array($this->getFieldValue($this->mapField));
         $this->backPath = tx_imagemapwizard_model_typo3env::getBackPath();
     }
 
@@ -93,8 +96,8 @@ class tx_imagemapwizard_model_dataObject {
 
         $data = $this->row[$dbField];
         if ($isFlex) {
-            $xml = t3lib_div::xml2array($data);
-            $tools = t3lib_div::makeInstance('t3lib_flexformtools');
+            $xml = GeneralUtility::xml2array($data);
+            $tools = GeneralUtility::makeInstance('TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
             $data = $tools->getArrayValueByPath($parts[3], $xml);
 
         }
@@ -121,7 +124,7 @@ class tx_imagemapwizard_model_dataObject {
             return NULL;
         }
 
-        /** @var t3lib_DB $db */
+        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $db */
         $db = $GLOBALS['TYPO3_DB'];
         $row = $db->exec_SELECTgetSingleRow(
             'sys_file.identifier',
@@ -136,7 +139,7 @@ class tx_imagemapwizard_model_dataObject {
 
         $someFileIdentifier = $identifier;
         /** @var \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository */
-        $storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $storageRepository = GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Core\\Resource\\StorageRepository'
         );
         /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
@@ -155,11 +158,11 @@ class tx_imagemapwizard_model_dataObject {
     public function getImageLocation($abs = FALSE) {
         $location = '';
         $imageField = $this->determineImageFieldName();
-        if ($this->table == 'tt_content' && $imageField == 'image' && t3lib_extMgm::isLoaded('dam_ttcontent') && t3lib_extMgm::isLoaded('dam')) {
+        if ($this->table == 'tt_content' && $imageField == 'image' && ExtensionManagementUtility::isLoaded('dam_ttcontent') && ExtensionManagementUtility::isLoaded('dam')) {
             $imageField = 'tx_damttcontent_files';
             $damFiles = tx_dam_db::getReferencedFiles('tt_content', $this->getFieldValue('uid'), $imageField);
             $location = array_pop($damFiles['files']);
-        } elseif (t3lib_div::compat_version('6.0')) {
+        } elseif (GeneralUtility::compat_version('6.0')) {
             $location = $this->getFalFieldValue($imageField);
         } else {
             if ($this->isFlexField($imageField)) {
@@ -188,14 +191,14 @@ class tx_imagemapwizard_model_dataObject {
      * @return string
      */
     public function renderImage() {
-        $t3env = t3lib_div::makeInstance('tx_imagemapwizard_model_typo3env');
+        $t3env = GeneralUtility::makeInstance('tx_imagemapwizard_model_typo3env');
         if (!$t3env->initTSFE($this->getLivePid(), $GLOBALS['BE_USER']->workspace, $GLOBALS['BE_USER']->user['uid'])) {
             return 'Can\'t render image since TYPO3 Environment is not ready.<br/>Error was:' . $t3env->get_lastError();
         }
         $conf = array('table' => $this->table, 'select.' => array('uidInList' => $this->getLiveUid(), 'pidInList' => $this->getLivePid()));
 
-        if (t3lib_extMgm::isLoaded('templavoila')) {
-            require_once(t3lib_extMgm::extPath('templavoila') . 'pi1/class.tx_templavoila_pi1.php');
+        if (ExtensionManagementUtility::isLoaded('templavoila')) {
+            require_once(ExtensionManagementUtility::extPath('templavoila') . 'pi1/class.tx_templavoila_pi1.php');
         }
         //render like in FE with WS-preview etc...
         $t3env->pushEnv();
@@ -225,7 +228,7 @@ class tx_imagemapwizard_model_dataObject {
      * @return unknown_type
      */
     public function renderThumbnail($confKey, $defaultMaxWH) {
-        $maxSize = t3lib_div::makeInstance('tx_imagemapwizard_model_typo3env')->getExtConfValue($confKey, $defaultMaxWH);
+        $maxSize = GeneralUtility::makeInstance('tx_imagemapwizard_model_typo3env')->getExtConfValue($confKey, $defaultMaxWH);
         $img = $this->renderImage();
         $matches = array();
         if (preg_match('/width="(\d+)" height="(\d+)"/', $img, $matches)) {
@@ -253,7 +256,7 @@ class tx_imagemapwizard_model_dataObject {
      * @return float
      */
     public function getThumbnailScale($confKey, $defaultMaxWH) {
-        $maxSize = t3lib_div::makeInstance('tx_imagemapwizard_model_typo3env')->getExtConfValue($confKey, $defaultMaxWH);
+        $maxSize = GeneralUtility::makeInstance('tx_imagemapwizard_model_typo3env')->getExtConfValue($confKey, $defaultMaxWH);
         $ret = 1;
         $img = $this->renderImage();
         $matches = array();
@@ -338,7 +341,7 @@ class tx_imagemapwizard_model_dataObject {
      * @return array
      */
     public function getAttributeKeys() {
-        $keys = t3lib_div::trimExplode(',', tx_imagemapwizard_model_typo3env::getExtConfValue('additionalAttributes', ''));
+        $keys = GeneralUtility::trimExplode(',', tx_imagemapwizard_model_typo3env::getExtConfValue('additionalAttributes', ''));
         $keys = array_diff($keys, array('alt', 'href', 'shape', 'coords'));
         $keys = array_map("strtolower", $keys);
         return array_filter($keys);
@@ -411,14 +414,14 @@ class tx_imagemapwizard_model_dataObject {
      */
     public function useCurrentData($value) {
         $cur = $this->getCurrentData();
-        if (!t3lib_div::makeInstance("tx_imagemapwizard_model_mapper")->compareMaps($cur, $value)) {
+        if (!GeneralUtility::makeInstance("tx_imagemapwizard_model_mapper")->compareMaps($cur, $value)) {
             $this->modifiedFlag = TRUE;
         }
 
         if ($this->isFlexField($this->mapField)) {
-            $tools = t3lib_div::makeInstance('t3lib_flexformtools');
+            $tools = GeneralUtility::makeInstance('TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
             $parts = explode(':', $this->mapField);
-            $data = t3lib_div::xml2array($this->row[$parts[2]]);
+            $data = GeneralUtility::xml2array($this->row[$parts[2]]);
             $tools->setArrayValueByPath($parts[3], $data, $value);
             $this->row[$parts[2]] = $tools->flexArray2Xml($data);
         } else {
@@ -432,9 +435,9 @@ class tx_imagemapwizard_model_dataObject {
      */
     public function getCurrentData() {
         if ($this->isFlexField($this->mapField)) {
-            $tools = t3lib_div::makeInstance('t3lib_flexformtools');
+            $tools = GeneralUtility::makeInstance('TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
             $parts = explode(':', $this->mapField);
-            $data = t3lib_div::xml2array($this->row[$parts[2]]);
+            $data = GeneralUtility::xml2array($this->row[$parts[2]]);
             return $tools->getArrayValueByPath($parts[3], $data);
         } else {
             return $this->row[$this->mapField];
@@ -467,7 +470,7 @@ class tx_imagemapwizard_model_dataObject {
         if ($subKey == NULL) {
             return $this->fieldConf;
         }
-        $tools = t3lib_div::makeInstance('t3lib_flexformtools');
+        $tools = GeneralUtility::makeInstance('TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
         return $tools->getArrayValueByPath($subKey, $this->fieldConf);
     }
 
