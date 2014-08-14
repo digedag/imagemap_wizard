@@ -29,16 +29,16 @@
 class tx_imagemapwizard_model_mapper {
 
 	/**
-	 * Generate a HTML-Imagemap using Typolink etc..
+	 * Generate a HTML imagemap using Typolink etc..
 	 *
 	 * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $cObj	 cObj cObject we used for genenerating the Links
 	 * @param string $name	Name of the generated map
-	 * @param string $mapping	mapping the XML_pseudo-imagemap
+	 * @param string $mapping	mapping the XML_pseudo imagemap
 	 * @param string $whitelist
 	 * @param boolean $xhtml
 	 * @param array $conf
 	 * @param int $mapNo
-	 * @return string the valid HTML-imagemap (hopefully valid)
+	 * @return string the valid HTML imagemap (hopefully valid)
 	 */
 	public function generateMap(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer &$cObj, $name, $mapping = NULL, $whitelist = NULL, $xhtml = NULL, $conf = NULL, $mapNo = 0) {
 		$useWhitelist = is_array($whitelist);
@@ -89,8 +89,8 @@ class tx_imagemapwizard_model_mapper {
 	/**
 	 * Encapsulates the creation of valid HTML-imagemap-names
 	 *
-	 * @param String value
-	 * @return String transformed value
+	 * @param string $value
+	 * @return string transformed value
 	 */
 	public function createValidNameAttribute($value) {
 
@@ -107,10 +107,11 @@ class tx_imagemapwizard_model_mapper {
 	}
 
 	/**
-	 * Encapsulates the creation of a valid typolink-conf array
+	 * Encapsulates the creation of a valid typolink conf array
 	 *
-	 * @param String param the paramater which is used for the link-generation
-	 * @return Array typolink-conf array
+	 * @param string $param the paramater which is used for the link-generation
+	 * @param array $conf
+	 * @return array $conf typolink-conf array
 	 */
 	protected function getTypolinkSetup($param, $conf = NULL) {
 		$ret = array('parameter.' => array('wrap'=>$param));
@@ -126,9 +127,9 @@ class tx_imagemapwizard_model_mapper {
 	 * is limited to one level (no recursion) since this is enough for the imagemap
 	 *
 	 * @see	 array2map
-	 * @param String value the XML-map
-	 * @param String basetag the Root-Tag of the resulting Array
-	 * @return Array transformed Array keys: 'name'~Tagname, 'value'~Tagvalue, '@'~Sub-Array with Attributes, '#'~Sub-Array with Childnodes
+	 * @param string $value the XML-map
+	 * @param string $basetag the Root-Tag of the resulting Array
+	 * @return array transformed Array keys: 'name'~Tagname, 'value'~Tagvalue, '@'~Sub-Array with Attributes, '#'~Sub-Array with Childnodes
 	 */
 	public static function map2array($value, $basetag = 'map') {
 		if (!strlen($value) || !is_string($value)) {
@@ -166,9 +167,9 @@ class tx_imagemapwizard_model_mapper {
 	 * Convert a PHP-Array into a XML-Structure
 	 *
 	 * @see map2array
-	 * @param Array value a Array which uses the same notation as described above
-	 * @param Integer level counting the current level for recursion...
-	 * @return String XML-String
+	 * @param array $value a Array which uses the same notation as described above
+	 * @param integer $level counting the current level for recursion...
+	 * @return string XML-String
 	 */
 	public static function array2map($value, $level = 0) {
 		if ((!$value['name']) && ($level == 0)) {
@@ -206,8 +207,8 @@ class tx_imagemapwizard_model_mapper {
 	/**
 	 * Encapsulate the extraction of Attributes out of the SimpleXML-Structure
 	 *
-	 * @param SimpleXMLNode node
-	 * @param String attr determindes if a single of (if empty) all attributes should be extracted
+	 * @param \SimpleXMLNode $node
+	 * @param string $attr determindes if a single of (if empty) all attributes should be extracted
 	 * @return Mixed Extracted attribute(s)
 	 *
 	 */
@@ -229,8 +230,8 @@ class tx_imagemapwizard_model_mapper {
 	/**
 	 * Combines a array of attributes into a HTML-conform list
 	 *
-	 * @param Array attributes
-	 * @return String
+	 * @param array $attributes
+	 * @return string
 	 */
 	protected static function implodeXMLAttributes($attributes) {
 		if (!is_array($attributes)) {
@@ -244,7 +245,7 @@ class tx_imagemapwizard_model_mapper {
 	}
 
 	/**
-	 * compare two element recursivly and check whether the content of both match
+	 * compare two element recursively and check whether the content of both match
 	 * order of elements is not important, just that every content related to a key is matching within these arrays
 	 *
 	 * @param	mixed  $a   first element

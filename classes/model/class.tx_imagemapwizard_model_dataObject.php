@@ -39,14 +39,14 @@ class tx_imagemapwizard_model_dataObject {
     protected $modifiedFlag = FALSE;
     protected $fieldConf;
 
-    /**
-     *
-     * @param $table
-     * @param $field
-     * @param $uid
-     * @param $currentValue
-     * @return unknown_type
-     */
+	/**
+	 * @param $table
+	 * @param $field
+	 * @param $uid
+	 * @param $currentValue
+	 * @throws Exception
+	 * @return \tx_imagemapwizard_model_dataObject
+	 */
     public function __construct($table, $field, $uid, $currentValue = NULL) {
         if (!in_array($table, array_keys($GLOBALS['TCA']))) {
             throw new Exception('table (' . $table . ') not defined in TCA');
@@ -67,10 +67,9 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @param $field
      * @param $listNum
-     * @return unknown_type
+     * @return mixed
      */
     public function getFieldValue($field, $listNum = -1) {
 
@@ -93,6 +92,7 @@ class tx_imagemapwizard_model_dataObject {
         $data = $this->row[$dbField];
         if ($isFlex) {
             $xml = GeneralUtility::xml2array($data);
+			/** @var  $tools \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
             $tools = GeneralUtility::makeInstance('TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools');
             $data = $tools->getArrayValueByPath($parts[3], $xml);
 
@@ -104,8 +104,6 @@ class tx_imagemapwizard_model_dataObject {
             $tmp = preg_split('/,/', $data);
             return $tmp[$listNum];
         }
-        return NULL;
-
     }
 
     /**
@@ -146,7 +144,7 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *    Retrives current imagelocation - if multiple files are stored in the field only the first is recognized
+     * Retrieves current image location - if multiple files are stored in the field only the first is respected
      *
      * @param $abs
      * @return string
@@ -159,7 +157,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return boolean
      */
     public function hasValidImageFile() {
@@ -169,7 +166,7 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *    Renders the image within a frontend-like context
+     * Renders the image within a frontend-like context
      *
      * @return string
      */
@@ -197,18 +194,18 @@ class tx_imagemapwizard_model_dataObject {
         $matches = array();
         if (!preg_match('/(<img[^>]+usemap="#[^"]+"[^>]*\/?>)/', $result, $matches)) {
             //TODO: consider to use the normal image as fallback here instead of showing an error-message
-            return 'No Image rendered from TSFE. :(<br/>Has the page some kind of special doktype or has it access-restrictions?<br/>There are lot\'s of things which can go wrong since normally nobody creates frontend-output in the backend ;)<br/>Error was:' . $t3env->get_lastError();
+            return 'No Image rendered from TSFE. :(<br/>Has the page some kind of special doktype or does it have access-restrictions?<br/>There are lots of things which can go wrong since normally nobody creates frontend-output in the backend ;)<br/>Error was:' . $t3env->get_lastError();
         }
         $result = str_replace('src="', 'src="' . ($this->backPath), $matches[1]);
         return $result;
     }
 
     /**
-     *  Renders a thumbnail with preconfiguraed dimensions
+     * Renders a thumbnail with pre-configured dimensions
      *
      * @param $confKey
      * @param $defaultMaxWH
-     * @return unknown_type
+     * @return string
      */
     public function renderThumbnail($confKey, $defaultMaxWH) {
         $maxSize = GeneralUtility::makeInstance('tx_imagemapwizard_model_typo3env')->getExtConfValue($confKey, $defaultMaxWH);
@@ -256,7 +253,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @param $template
      * @return string
      */
@@ -275,7 +271,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @param $area
      * @return string
      */
@@ -289,7 +284,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return string
      */
     public function emptyAttributeSet() {
@@ -304,7 +298,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @param $v
      * @return string
      */
@@ -320,7 +313,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return array
      */
     public function getAttributeKeys() {
@@ -331,7 +323,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return int
      */
     protected function getLivePid() {
@@ -339,7 +330,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return int
      */
     protected function getLiveUid() {
@@ -347,7 +337,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return string
      */
     protected function determineImageFieldName() {
@@ -359,7 +348,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return string
      */
     public function getTablename() {
@@ -367,7 +355,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return string
      */
     public function getFieldname() {
@@ -375,7 +362,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return array
      */
     public function getRow() {
@@ -383,7 +369,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return int
      */
     public function getUid() {
@@ -391,7 +376,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @param $value
      * @return void
      */
@@ -413,7 +397,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return string
      */
     public function getCurrentData() {
@@ -428,7 +411,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @return boolean
      */
     public function hasDirtyState() {
@@ -436,7 +418,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @param $cfg
      * @return void
      */
@@ -445,7 +426,6 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @param $subKey
      * @return array
      */
@@ -458,9 +438,8 @@ class tx_imagemapwizard_model_dataObject {
     }
 
     /**
-     *
      * @param $field
-     * @return boolesan
+     * @return boolean
      */
     protected function isFlexField($field) {
         $theField = $field;

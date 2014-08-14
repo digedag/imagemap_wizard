@@ -122,11 +122,12 @@ class tx_imagemapwizard_controller_wizard {
 
 
 	/**
-	 * Generate the Form since this is directly called we have to repeat some initial steps
+	 * Generate the Form
+	 * Since this is directly called we have to repeat some initial steps
 	 *
-	 * @param	Object		PA
-	 * @param	Object		fobj
-	 * @return	String		HTMLCode with form-field
+	 * @param object $PA
+	 * @param TYPO3\CMS\Backend\Form\FormEngine $fobj
+	 * @return string HTML code with form field
 	 */
 	public function renderForm($PA, \TYPO3\CMS\Backend\Form\FormEngine $fobj) {
 		$GLOBALS['BE_USER']->setAndSaveSessionData('imagemap_wizard.value', NULL);

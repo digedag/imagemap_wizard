@@ -27,7 +27,7 @@ class tx_imagemapwizard_wizicon {
 	/**
 	 * Adds wizard icon
 	 *
-	 * @param   array	  Input array with wizard items for plugins
+	 * @param   array	  $wizardItems Input array with wizard items for plugins
 	 * @return   array	  Modified input array, having the item added.
 	 */
 	function proc($wizardItems) {
@@ -50,10 +50,8 @@ class tx_imagemapwizard_wizicon {
 	}
 
 	/**
-	 * [Describe function...]
-	 *
-	 * @param   [type]	  $list: ...
-	 * @return   [type]	  ...
+	 * @param $list
+	 * @return int
 	 */
 	function getCommonItemCount($list) {
 		if (!is_array($list)) {

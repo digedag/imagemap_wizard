@@ -33,6 +33,8 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 
 	protected $doc;
 
+	public $content;
+
 	/**
 	 * Just initialize the View, fill internal variables etc...
 	 */
@@ -93,7 +95,8 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 	/**
 	 * Inserts the collected Resource-References to the Header
 	 *
-	 * @param String Content
+	 * @param string $content
+	 * @return string
 	 */
 	protected function insertMyStylesAndJs($content) {
 		$content = str_replace('<!--###POSTJSMARKER###-->', $this->getExternalJSIncludes() . '<!--###POSTJSMARKER###-->', $content);
@@ -105,11 +108,11 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 	/**
 	 * Create a Wizard-Icon for the Link-Wizard
 	 *
-	 * @param String linkId ID for the id-attribute of the generated Link
-	 * @param String fieldName Name of the edited field
-	 * @param String fieldValue current value of the field (mostly a placeholder is used)
-	 * @param String updateCallback the Javascript-Callback in case of successful change
-	 * @return String Generated HTML-link to the Link-Wizard
+	 * @param string $linkId ID for the id-attribute of the generated Link
+	 * @param string $fieldName Name of the edited field
+	 * @param string $fieldValue current value of the field (mostly a placeholder is used)
+	 * @param string $updateCallback the Javascript-Callback in case of successful change
+	 * @return string Generated HTML-link to the Link-Wizard
 	 */
 	protected function linkWizardIcon($linkId, $fieldName, $fieldValue, $updateCallback = '') {
 
@@ -136,7 +139,7 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 	/**
 	 * Create a valid and unique form-tag
 	 *
-	 * @return String the HTML-form-tag
+	 * @return string the HTML-form-tag
 	 */
 	protected function getFormTag() {
 		return "<form id='" . $this->getId() . "' name='" . $this->getId() . "'>";
@@ -153,6 +156,9 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 		return $ret;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getEmptyAttributset() {
 		$attrKeys = $this->data->getAttributeKeys();
 		$ret = "";

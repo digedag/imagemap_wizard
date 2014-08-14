@@ -37,8 +37,9 @@ class tx_imagemapwizard_model_typo3env {
 	/**
 	 * Initialize TSFE so that the Frontend-Stuff can also be used in the Backend
 	 *
-	 * @param	Integer		pid The pid if the page which is simulated
-	 * @return	Boolean		returns success of the operation
+	 * @param int $pid The pid if the page which is simulated
+	 * @param int $ws
+	 * @return    Boolean        returns success of the operation
 	 */
 	public function initTSFE($pid = 1, $ws = 0) {
 		/* local includes otherwise XCLASSES might be lost due to extension load order */
@@ -107,7 +108,6 @@ class tx_imagemapwizard_model_typo3env {
 
 	/**
 	 * Stack variable to store environment-settings
-	 *
 	 */
 	protected $envStack = array();
 
@@ -181,7 +181,6 @@ class tx_imagemapwizard_model_typo3env {
 
 	/**
 	 * lazyload the feBEUSER
-	 *
 	 */
 	protected function initMyBE_USER() {
 		$this->BE_USER = GeneralUtility::makeInstance('TYPO3\CMS\Backend\FrontendBackendUserAuthentication'); // New backend user object
@@ -201,7 +200,6 @@ class tx_imagemapwizard_model_typo3env {
 
 	/**
 	 * Enables external debugging ...
-	 *
 	 */
 	public function get_lastError() {
 		return $this->lastError;
@@ -234,7 +232,7 @@ class tx_imagemapwizard_model_typo3env {
 	 * Get the value out of the Extension-Configuration determined by the submitted key
 	 *
 	 * @param  string	$confKey - the extension configuration key
-	 * @param  string	$defaulr - default value which is used whenevery the extension configuration doesn't contain a valid value
+	 * @param  string	$default - default value which is used whenevery the extension configuration doesn't contain a valid value
 	 * @return mixed	 either the config value or the default value
 	 */
 	public static function getExtConfValue($confKey, $default) {

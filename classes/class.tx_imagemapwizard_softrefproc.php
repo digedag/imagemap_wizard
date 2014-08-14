@@ -34,14 +34,14 @@ class tx_imagemapwizard_softrefproc extends \TYPO3\CMS\Core\Database\SoftReferen
 	 * Just overrides the method which normally catches all softref-types
 	 * In this case we already know what type it is ;)
 	 *
-	 * @param String table
-	 * @param String field
-	 * @param String uid
-	 * @param String content
-	 * @param String spKey
-	 * @param Array spParams
-	 * @param String structurePath
-	 * @return Array the Array which describes what references we found and where ...
+	 * @param string $table
+	 * @param string $field
+	 * @param string $uid
+	 * @param string $content
+	 * @param string $spKey
+	 * @param array $spParams
+	 * @param string $structurePath
+	 * @return array the Array which describes what references we found and where ...
 	 */
 
 	function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {

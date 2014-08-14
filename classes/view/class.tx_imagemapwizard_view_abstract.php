@@ -74,7 +74,7 @@ abstract class tx_imagemapwizard_view_abstract {
 	/**
 	 * Collect required Javascript-Resoucres
 	 *
-	 * @param String Filename
+	 * @param string Filename
 	 */
 	protected function addExternalJS($file) {
 		if (!in_array($file, $this->jsFiles)) {
@@ -85,7 +85,7 @@ abstract class tx_imagemapwizard_view_abstract {
 	/**
 	 * Collect required Inline-Javascript.
 	 *
-	 * @param String Javascript-Block
+	 * @param string Javascript-Block
 	 */
 	protected function addInlineJS($js) {
 		$this->inlineJs .= "\n\n" . $js;
@@ -95,7 +95,7 @@ abstract class tx_imagemapwizard_view_abstract {
 	/**
 	 * Collect required CSS-Resoucres
 	 *
-	 * @param String Filename
+	 * @param string Filename
 	 */
 	protected function addExternalCSS($file) {
 		if (!in_array($file, $this->cssFiles)) {
@@ -152,9 +152,9 @@ abstract class tx_imagemapwizard_view_abstract {
 	/**
 	 * Create a img-tag with a TYPO3-Skinicon
 	 *
-	 * @param String skinPath the Path to the TYPO3-icon
-	 * @param String attr additional required attributes
-	 * @return String HTML-img-tag
+	 * @param string $skinPath the Path to the TYPO3-icon
+	 * @param string $attr additional required attributes
+	 * @return string HTML-img-tag
 	 */
 	protected function getIcon($skinPath, $attr = '') {
 
@@ -171,10 +171,10 @@ abstract class tx_imagemapwizard_view_abstract {
 	}
 
 	/**
-	 *   Determine path to the view-templates
-	 *   Just a shortcut to reduce the code within the view's
+	 * Determine path to the view-templates
+	 * Just a shortcut to reduce the code within the view's
 	 *
-	 *   @return string	  relative path to the template folder
+	 * @return string	  relative path to the template folder
 	 */
 	protected function getTplSubpath() {
 		return tx_imagemapwizard_model_typo3env::getExtBackPath('imagemap_wizard') . 'templates/';
