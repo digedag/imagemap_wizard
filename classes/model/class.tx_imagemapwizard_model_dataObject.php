@@ -155,20 +155,7 @@ class tx_imagemapwizard_model_dataObject {
     public function getImageLocation($abs = FALSE) {
         $location = '';
         $imageField = $this->determineImageFieldName();
-        if ($this->table == 'tt_content' && $imageField == 'image' && ExtensionManagementUtility::isLoaded('dam_ttcontent') && ExtensionManagementUtility::isLoaded('dam')) {
-            $imageField = 'tx_damttcontent_files';
-            $damFiles = tx_dam_db::getReferencedFiles('tt_content', $this->getFieldValue('uid'), $imageField);
-            $location = array_pop($damFiles['files']);
-        } elseif (GeneralUtility::compat_version('6.0')) {
-            $location = $this->getFalFieldValue($imageField);
-        } else {
-            if ($this->isFlexField($imageField)) {
-                $path = $this->getFieldConf('config/userImage/uploadfolder');
-            } else {
-                $path = $GLOBALS['TCA'][$this->table]['columns'][$imageField]['config']['uploadfolder'];
-            }
-            $location = $path . '/' . $this->getFieldValue($imageField, 0);
-        }
+		$location = $this->getFalFieldValue($imageField);
         return ($abs ? PATH_site : $this->backPath) . $location;
     }
 
