@@ -52,7 +52,6 @@ class tx_imagemapwizard_model_dataObject {
             throw new Exception('table (' . $table . ') not defined in TCA');
         }
         $this->table = $table;
-        GeneralUtility::loadTCA($this->table);
         if (!in_array($field, array_keys($GLOBALS['TCA'][$table]['columns']))) {
             throw new Exception('field (' . $field . ') unknow for table in TCA');
         }

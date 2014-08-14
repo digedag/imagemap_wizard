@@ -1,7 +1,5 @@
 <?php
 
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
-
 $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][] = array(
     0 => 'LLL:EXT:imagemap_wizard/locallang.xml:imagemap.title',
     1 => 'imagemap_wizard',

@@ -76,7 +76,6 @@ class tx_imagemapwizard_controller_wizard {
 
 		$this->view->setFormName($this->params['itemFormElName']);
 		$this->view->setWizardConf($this->params['fieldConf']['config']['wizards']);
-		GeneralUtility::loadTCA($this->params['table']);
 
 		return $this->view->renderContent();
 	}
