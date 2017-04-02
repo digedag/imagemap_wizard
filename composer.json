@@ -1,0 +1,32 @@
+{
+	"name" : "digedag/imagemap_wizard",
+	"description" : "Replaces imagemap_wizard extension from TER",
+	"type" : "typo3-cms-extension",
+	"keywords" : ["TYPO3 CMS", "imagemap"],
+	"license" : "GPL-2.0+",
+	"authors" : [
+		{
+			"name" : "Tolleiv Nietsch",
+			"role" : "Developer"
+		},
+		{
+			"name" : "René Nitzsche",
+			"role" : "Developer"
+		},
+		{
+			"name" : "Jost Baron",
+			"role" : "Developer"
+		},
+		{
+			"name" : "Lorenz Ulrich",
+			"role" : "Developer"
+		}
+	],
+	"support": {
+		"email": "rene@system25.de",
+		"source": "https://github.com/digedag/imagemap_wizard"
+	},
+	"replace": {
+		"typo3-ter/imagemap_wizard": "*"
+	}
+}
