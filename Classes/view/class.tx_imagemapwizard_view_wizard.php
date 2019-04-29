@@ -41,7 +41,12 @@ class tx_imagemapwizard_view_wizard extends tx_imagemapwizard_view_abstract {
 	 */
 	public function init() {
 		parent::init();
-		$this->doc = GeneralUtility::makeInstance('noDoc');
+//		$this->doc = GeneralUtility::makeInstance('noDoc');
+
+		$this->doc = tx_rnbase::makeInstance(
+		    'Tx_Rnbase_Backend_Template_Override_DocumentTemplate'
+		    );
+
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->docType = 'xhtml_trans';
 		$this->doc->form = $this->getFormTag();

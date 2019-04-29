@@ -36,5 +36,3 @@ $GLOBALS['LANG']->includeLLFile('EXT:imagemap_wizard/locallang.xml');
 
 $SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_imagemapwizard_controller_wizard');
 $SOBE->triggerAction();
-
-?>

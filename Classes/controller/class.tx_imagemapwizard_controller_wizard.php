@@ -77,6 +77,9 @@ class tx_imagemapwizard_controller_wizard {
 		$this->view->setFormName($this->params['itemFormElName']);
 		$this->view->setWizardConf($this->params['fieldConf']['config']['wizards']);
 
+	\tx_rnbase_util_Debug::debug($this->view, __FILE__.':'.__LINE__); // TODO: remove me
+	exit();
+
 		return $this->view->renderContent();
 	}
 
@@ -103,7 +106,7 @@ class tx_imagemapwizard_controller_wizard {
 	 */
 	public function triggerAction() {
 		$action = $this->context . ($this->ajax ? 'Ajax' : '') . 'Action';
-		return call_user_func_array(array($this, $action), array());
+		return call_user_func_array([$this, $action], []);
 	}
 
 	/**
@@ -126,10 +129,10 @@ class tx_imagemapwizard_controller_wizard {
 	 * Since this is directly called we have to repeat some initial steps
 	 *
 	 * @param object $PA
-	 * @param TYPO3\CMS\Backend\Form\FormEngine $fobj
+	 * @param \TYPO3\CMS\Backend\Form\Element\UserElement $fobj
 	 * @return string HTML code with form field
 	 */
-	public function renderForm($PA, \TYPO3\CMS\Backend\Form\FormEngine $fobj) {
+	public function renderForm($PA, \TYPO3\CMS\Backend\Form\Element\UserElement $fobj) {
 		$GLOBALS['BE_USER']->setAndSaveSessionData('imagemap_wizard.value', NULL);
 		$this->params['table'] = $PA['table'];
 		if ($GLOBALS['TCA'][$PA['table']]['columns'][$PA['field']]['config']['type'] == 'flex') {
@@ -147,6 +150,7 @@ class tx_imagemapwizard_controller_wizard {
 
 		$this->initContext('tceform');
 		$this->initView();
+
 		return $this->triggerAction();
 	}
 
