@@ -132,10 +132,12 @@ abstract class tx_imagemapwizard_view_abstract {
 	}
 
 	protected function renderTemplate($file) {
-		ob_start();
-		include(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('imagemap_wizard') . 'templates/' . $file);
+	    ob_start();
+		include(tx_rnbase_util_Extensions::extPath('imagemap_wizard') . 'templates/' . $file);
 		$ret = ob_get_contents();
 		ob_end_clean();
+
+
 		return $ret;
 	}
 

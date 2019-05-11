@@ -28,5 +28,11 @@
 	},
 	"replace": {
 		"typo3-ter/imagemap_wizard": "*"
-	}
+	},
+    "autoload": {
+        "classmap": [
+            "Classes/"
+        ],
+        "psr-4": {"Sys25\\ImageMapWizard\\" : "Classes"}
+    }
 }

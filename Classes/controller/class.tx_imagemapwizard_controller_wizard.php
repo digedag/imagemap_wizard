@@ -40,12 +40,17 @@ class tx_imagemapwizard_controller_wizard {
 	 * Initialize Context and required View
 	 */
 	public function __construct() {
-		$this->initContext();
-		$this->initView();
+	}
+
+	public function initWizard()
+	{
+	    $this->initContext();
+	    $this->initView();
 	}
 
 	/**
 	 * Default action just renders the Wizard with the default view.
+	 * Wird im Popup aufgerufen.
 	 */
 	protected function wizardAction() {
 		$params = GeneralUtility::_GP('P');
@@ -64,23 +69,23 @@ class tx_imagemapwizard_controller_wizard {
 	 * comes with a cool preview and Ajax functionality which updates the preview...
 	 */
 	protected function tceformAction() {
-		try {
+	    /* @var $view \tx_imagemapwizard_view_tceform */
+	    $view = $this->initView();
+	    try {
 			$data = $this->makeDataObj($this->params['table'], $this->params['field'], $this->params['uid'], $this->forceValue);
 		} catch (Exception $e) {
 			// @todo make something smart if params are empty and object creation failed
 		}
 		$data->setFieldConf($this->params['fieldConf']);
 
-		$this->view->setData($data);
-		$this->view->setTCEForm($this->params['pObj']);
+		$view->setData($data);
+		// pObj war mal die Klasse t3lib_tceforms
+		$view->setTCEForm($this->params['pObj']);
 
-		$this->view->setFormName($this->params['itemFormElName']);
-		$this->view->setWizardConf($this->params['fieldConf']['config']['wizards']);
+		$view->setFormName($this->params['itemFormElName']);
+		$view->setWizardConf($this->params['fieldConf']['config']['wizards']);
 
-	\tx_rnbase_util_Debug::debug($this->view, __FILE__.':'.__LINE__); // TODO: remove me
-	exit();
-
-		return $this->view->renderContent();
+		return $view->renderContent();
 	}
 
 	/**
@@ -121,6 +126,7 @@ class tx_imagemapwizard_controller_wizard {
 	protected function initView() {
 		$this->view = GeneralUtility::makeInstance('tx_imagemapwizard_view_' . $this->context);
 		$this->view->init($this->context);
+		return $this->view;
 	}
 
 
@@ -128,7 +134,7 @@ class tx_imagemapwizard_controller_wizard {
 	 * Generate the Form
 	 * Since this is directly called we have to repeat some initial steps
 	 *
-	 * @param object $PA
+	 * @param object $PA parameter array
 	 * @param \TYPO3\CMS\Backend\Form\Element\UserElement $fobj
 	 * @return string HTML code with form field
 	 */
@@ -144,12 +150,12 @@ class tx_imagemapwizard_controller_wizard {
 		}
 
 		$this->params['uid'] = $PA['row']['uid'];
-		$this->params['pObj'] = $PA['pObj'];
+//		$this->params['pObj'] = $PA['pObj'];
+		$this->params['pObj'] = $fobj;
 		$this->params['fieldConf'] = $PA['fieldConf'];
 		$this->params['itemFormElName'] = $PA['itemFormElName'];
 
 		$this->initContext('tceform');
-		$this->initView();
 
 		return $this->triggerAction();
 	}

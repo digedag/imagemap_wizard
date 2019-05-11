@@ -42,9 +42,22 @@ class tx_imagemapwizard_model_typo3env {
 	 * @return    Boolean        returns success of the operation
 	 */
 	public function initTSFE($pid = 1, $ws = 0) {
-		/* local includes otherwise XCLASSES might be lost due to extension load order */
+	    $tsfe = tx_rnbase_util_Misc::prepareTSFE([
+	        'force' => true,
+	        'pid' => $pid,
+	        'type' => 0
+	    ]);
+	    $tsfe->cObj = tx_rnbase::makeInstance(
+	        tx_rnbase_util_Typo3Classes::getContentObjectRendererClass()
+	    );
+	    $tsfe->no_cache = true;
+	    $page = tx_rnbase_util_TYPO3::getSysPage();
+	    $rootlineByPid = $page->getRootLine($pid);
+	    $tsfe->rootLine = $rootlineByPid;
 
+		/* local includes otherwise XCLASSES might be lost due to extension load order */
 		$tca = $GLOBALS['TCA'];
+/*
 		$GLOBALS['TT'] = GeneralUtility::makeInstance('TYPO3\CMS\Core\TimeTracker\TimeTracker');
 		$GLOBALS['TT']->start();
 
@@ -94,15 +107,16 @@ class tx_imagemapwizard_model_typo3env {
 			$this->lastError = "Error(" . __LINE__ . ") [ template not loaded as supposed ] :" . $sqlDebug;
 			//return false;   we continue using the TSFE but write down that there's something which was wrong
 		}
-		$GLOBALS['TSFE']->getConfigArray();
-		$GLOBALS['TSFE']->TYPO3_CONF_VARS['EXT']['extCache'] = 0;
-		$GLOBALS['TSFE']->getCompressedTCarray();
-		$GLOBALS['TSFE']->inituserGroups();
+*/
+		$tsfe->forceTemplateParsing = true;
+		// Hier sollte das TS geladen werden
+		$tsfe->getConfigArray();
+// 		$GLOBALS['TSFE']->getCompressedTCarray();
+// 		$GLOBALS['TSFE']->inituserGroups();
 		unset($GLOBALS['TSFE']->TYPO3_CONF_VARS['FE']['pageNotFound_handling']);
-		$GLOBALS['TSFE']->determineId();
+//		$GLOBALS['TSFE']->determineId();
 		$GLOBALS['TSFE']->newCObj();
 		$GLOBALS['TCA'] = $tca; //todo: check why TCA is lost sometimes...
-
 		return true;
 	}
 

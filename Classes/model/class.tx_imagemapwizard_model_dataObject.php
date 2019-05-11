@@ -21,8 +21,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class/Function used to access the given Map-Data within Backend-Forms
@@ -38,6 +39,8 @@ class tx_imagemapwizard_model_dataObject {
     protected $backPath;
     protected $modifiedFlag = FALSE;
     protected $fieldConf;
+
+    protected $imageFile;
 
 	/**
 	 * @param $table
@@ -106,41 +109,48 @@ class tx_imagemapwizard_model_dataObject {
         }
     }
 
+    protected function getFalFieldValue($imageField)
+    {
+        $file = $this->getFalFile($imageField);
+        return $file->getPublicUrl();
+    }
+
     /**
      * Fetches the first file reference from FAL
      *
      * @param string $field
-     * @return string|NULL
+     * @return \TYPO3\CMS\Core\Resource\File
      */
-    public function getFalFieldValue($field) {
-        $image = NULL;
+    protected  function getFalFile($field) {
         if (!is_array($this->row)) {
             return NULL;
         }
+        if($this->imageFile == null) {
+            $db = \Tx_Rnbase_Database_Connection::getInstance();
+            $rows = $db->doSelect(
+                'sys_file.identifier',
+                ['sys_file JOIN sys_file_reference ON sys_file.uid = sys_file_reference.uid_local', 'sys_file'],
+                [
+                    'where' => 'sys_file_reference.uid_foreign = ' . intval($this->row['uid']),
+                    'orderby' => 'sys_file_reference.sorting_foreign ASC',
+                ]
 
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $db */
-        $db = $GLOBALS['TYPO3_DB'];
-        $row = $db->exec_SELECTgetSingleRow(
-            'sys_file.identifier',
-            'sys_file, sys_file_reference',
-            'sys_file.uid = sys_file_reference.uid_local AND ' .
-            'sys_file_reference.uid_foreign = ' . intval($this->row['uid']),
-            '',
-            'sorting_foreign ASC'
-        );
-        if (!$row) return NULL;
-        $identifier = $row['identifier'];
+                );
 
-        $someFileIdentifier = $identifier;
-        /** @var \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository */
-        $storageRepository = GeneralUtility::makeInstance(
-            'TYPO3\\CMS\\Core\\Resource\\StorageRepository'
-        );
-        /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
-        $storage = $storageRepository->findByUid(1);
-        $file = $storage->getFile($someFileIdentifier);
+            if (empty($rows)) return NULL;
+            $row = reset($rows);
+            $identifier = $row['identifier'];
 
-        return $file->getPublicUrl();
+            $someFileIdentifier = $identifier;
+            /** @var \TYPO3\CMS\Core\Resource\StorageRepository $storageRepository */
+            $storageRepository = GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Core\\Resource\\StorageRepository'
+                );
+            /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
+            $storage = $storageRepository->findByUid(1);
+            $this->imageFile = $storage->getFile($someFileIdentifier);
+        }
+        return $this->imageFile;
     }
 
     /**
@@ -160,6 +170,8 @@ class tx_imagemapwizard_model_dataObject {
      * @return boolean
      */
     public function hasValidImageFile() {
+
+
         return $this->getFieldValue('uid') &&
             is_file($this->getImageLocation(TRUE)) &&
             is_readable($this->getImageLocation(TRUE));
@@ -171,27 +183,31 @@ class tx_imagemapwizard_model_dataObject {
      * @return string
      */
     public function renderImage() {
+        /* @var $t3env \tx_imagemapwizard_model_typo3env */
         $t3env = GeneralUtility::makeInstance('tx_imagemapwizard_model_typo3env');
         if (!$t3env->initTSFE($this->getLivePid(), $GLOBALS['BE_USER']->workspace, $GLOBALS['BE_USER']->user['uid'])) {
             return 'Can\'t render image since TYPO3 Environment is not ready.<br/>Error was:' . $t3env->get_lastError();
         }
-        $conf = array('table' => $this->table, 'select.' => array('uidInList' => $this->getLiveUid(), 'pidInList' => $this->getLivePid()));
 
-        if (ExtensionManagementUtility::isLoaded('templavoila')) {
-            require_once(ExtensionManagementUtility::extPath('templavoila') . 'pi1/class.tx_templavoila_pi1.php');
-        }
+        $conf = [
+            'table' => $this->table,
+            'select.' => ['uidInList' => $this->getLiveUid(), 'pidInList' => $this->getLivePid()]
+        ];
+
         //render like in FE with WS-preview etc...
         $t3env->pushEnv();
         $t3env->setEnv(PATH_site);
         $t3env->resetEnableColumns('pages'); // enable rendering on access-restricted pages
         $t3env->resetEnableColumns('pages_language_overlay');
         $t3env->resetEnableColumns($this->table); // no fe_group, start/end, hidden restrictions needed :P
-        $GLOBALS['TSFE']->cObj->LOAD_REGISTER(array('keepUsemapMarker' => '1'), 'LOAD_REGISTER');
-        $result = $GLOBALS['TSFE']->cObj->CONTENT($conf);
+        /* @var $tsfe \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController */
+        $tsfe = $GLOBALS['TSFE'];
+        $tsfe->cObj->cObjGetSingle('LOAD_REGISTER', ['keepUsemapMarker' => '1']);
+        $result = $tsfe->cObj->cObjGetSingle('CONTENT',$conf);
         $t3env->popEnv();
 
         // extract the image
-        $matches = array();
+        $matches = [];
         if (!preg_match('/(<img[^>]+usemap="#[^"]+"[^>]*\/?>)/', $result, $matches)) {
             //TODO: consider to use the normal image as fallback here instead of showing an error-message
             return 'No Image rendered from TSFE. :(<br/>Has the page some kind of special doktype or does it have access-restrictions?<br/>There are lots of things which can go wrong since normally nobody creates frontend-output in the backend ;)<br/>Error was:' . $t3env->get_lastError();
@@ -210,7 +226,8 @@ class tx_imagemapwizard_model_dataObject {
     public function renderThumbnail($confKey, $defaultMaxWH) {
         $maxSize = GeneralUtility::makeInstance('tx_imagemapwizard_model_typo3env')->getExtConfValue($confKey, $defaultMaxWH);
         $img = $this->renderImage();
-        $matches = array();
+
+        $matches = [];
         if (preg_match('/width="(\d+)" height="(\d+)"/', $img, $matches)) {
             $width = intval($matches[1]);
             $height = intval($matches[2]);

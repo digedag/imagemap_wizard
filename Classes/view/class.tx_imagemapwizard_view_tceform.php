@@ -36,7 +36,7 @@ class tx_imagemapwizard_view_tceform extends tx_imagemapwizard_view_abstract {
 	}
 
 	/**
-	 * Renders Content and prints it to the screen (or any active output buffer)
+	 * Anzeige der Vorschau im TCE-Form. Die markierten Bereiche sind sichtbar.
 	 *
 	 * @return string	 the rendered form content
 	 */
@@ -44,8 +44,8 @@ class tx_imagemapwizard_view_tceform extends tx_imagemapwizard_view_abstract {
 		if (!$this->data->hasValidImageFile()) {
 			$content = $this->form->sL('LLL:EXT:imagemap_wizard/locallang.xml:form.no_image');
 		} else {
-			$content = $this->renderTemplate('tceform.php');
-			$this->form->additionalCode_pre[] = $this->getExternalJSIncludes();
+		    $content = $this->renderTemplate('tceform.php');
+		    $this->form->additionalCode_pre[] = $this->getExternalJSIncludes();
 			$this->form->additionalCode_pre[] = $this->getInlineJSIncludes();
 		}
 		return $content;
@@ -57,5 +57,63 @@ class tx_imagemapwizard_view_tceform extends tx_imagemapwizard_view_abstract {
 
 	public function setFormName($name) {
 		$this->formName = $name;
+	}
+
+	protected function renderTemplate($file) {
+
+	    $this->addExternalJS("templates/js/jquery-1.4.min.js");
+	    $this->addExternalJS("templates/js/jquery-ui-1.7.2.custom.min.js");
+	    $this->addExternalJS("templates/js/jquery.base64.js");
+	    $this->addExternalJS("templates/js/wizard.all.js.ycomp.js");
+
+	    $existingFields = $this->data->listAreas("\tcanvasObject.addArea(new area##shape##Class(),'##coords##','##alt##','##link##','##color##',0);\n");
+	    $this->addInlineJS('
+jQuery.noConflict();
+function imagemapwizard_valueChanged(field) {
+    jQuery.ajaxSetup({
+        url: "'.$this->getAjaxURL('wizard.php').'",
+        global: false,
+        type: "POST",
+        success: function(data, textStatus) {
+            if(textStatus==\'success\') {
+                jQuery("#'.$this->getId().'").html(data);
+            }
+        },
+        data: { context:"tceform",
+                ajax: "1",
+                formField:field.name,
+                value:field.value,
+                table:"'.$this->data->getTablename().'",
+                field:"'.$this->data->getFieldname().'",
+                uid:"'.$this->data->getUid().'",
+                config:"'.addslashes(serialize($this->data->getFieldConf())).'"
+        }
+    });
+    jQuery.ajax();
+}
+');
+	    $additionalWizardConf = ['fieldChangeFunc'=>['imagemapwizard_valueChanged(field);']];
+
+	    $out = '<div id="'.$this->getId().'" style="position:relative">';
+	    $imagePreview = '    <div class="imagemap_wiz" style="padding:5px;overflow:hidden;position:relative">
+        <div id="'.$this->getId().'-canvas" style="position:relative;top:5px;left:5px;overflow:hidden;">'.
+        $this->data->renderThumbnail('previewImageMaxWH',200) .'
+        </div>
+    </div>
+';
+
+        $out .= $imagePreview;
+//         $out .= $this->form->renderWizards(
+//             [$imagePreview,''],
+//             $this->wizardConf,
+//             $this->data->getTablename(),
+//             $this->data->getRow(),
+//             $this->data->getFieldname(),
+//             $additionalWizardConf,
+//             $this->formName,[],1
+//         );
+        $out .= '</div>';
+
+        return $out;
 	}
 }
