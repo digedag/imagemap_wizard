@@ -1,3 +1,39 @@
+<?php
+$this->addExternalJS("templates/js/jquery-1.4.min.js");
+$this->addExternalJS("templates/js/jquery-ui-1.7.2.custom.min.js");
+$this->addExternalJS("templates/js/jquery.base64.js");
+$this->addExternalJS("templates/js/wizard.all.js.ycomp.js");
+
+$existingFields = $this->data->listAreas("\tcanvasObject.addArea(new area##shape##Class(),'##coords##','##alt##','##link##','##color##',0);\n");
+
+$this->addInlineJS('
+jQuery.noConflict();
+
+function imagemapwizard_valueChanged(field) {
+    jQuery.ajaxSetup({
+        url: "'.$this->getAjaxURL('wizard.php').'",
+        global: false,
+        type: "POST",
+        success: function(data, textStatus) {
+            if(textStatus==\'success\') {
+                jQuery("#'.$this->getId().'").html(data);
+            }
+        },
+        data: { context:"tceform",
+                ajax: "1",
+                formField:field.name,
+                value:field.value,
+                table:"'.$this->data->getTablename().'",
+                field:"'.$this->data->getFieldname().'",
+                uid:"'.$this->data->getUid().'",
+                config:"'.addslashes(serialize($this->data->getFieldConf())).'"
+        }
+    });
+    jQuery.ajax();
+}
+');
+$additionalWizardConf = array('fieldChangeFunc'=>array('imagemapwizard_valueChanged(field);'));
+?>
 <div id="<?php echo $this->getId(); ?>" style="position:relative">
 
     <?php
@@ -13,8 +49,7 @@
     <?php
         $imagepreview = ob_get_contents();
         ob_end_clean();
-        echo 'Test';
-//        echo $this->form->renderWizards(array($imagepreview,''),$this->wizardConf,$this->data->getTablename(),$this->data->getRow(),$this->data->getFieldname(),$additionalWizardConf,$this->formName,array(),1)
+        echo $this->form->renderWizards(array($imagepreview,''),$this->wizardConf,$this->data->getTablename(),$this->data->getRow(),$this->data->getFieldname(),$additionalWizardConf,$this->formName,array(),1)
     ?>
 
     <?php

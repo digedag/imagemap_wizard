@@ -138,7 +138,7 @@ class tx_imagemapwizard_controller_wizard {
 	 * @param \TYPO3\CMS\Backend\Form\Element\UserElement $fobj
 	 * @return string HTML code with form field
 	 */
-	public function renderForm($PA, \TYPO3\CMS\Backend\Form\Element\UserElement $fobj) {
+	public function renderForm($PA, \TYPO3\CMS\Backend\Form\Element\AbstractFormElement $fobj) {
 		$GLOBALS['BE_USER']->setAndSaveSessionData('imagemap_wizard.value', NULL);
 		$this->params['table'] = $PA['table'];
 		if ($GLOBALS['TCA'][$PA['table']]['columns'][$PA['field']]['config']['type'] == 'flex') {

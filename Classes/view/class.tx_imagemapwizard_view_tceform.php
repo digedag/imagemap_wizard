@@ -103,15 +103,30 @@ function imagemapwizard_valueChanged(field) {
 ';
 
         $out .= $imagePreview;
-//         $out .= $this->form->renderWizards(
-//             [$imagePreview,''],
-//             $this->wizardConf,
-//             $this->data->getTablename(),
-//             $this->data->getRow(),
-//             $this->data->getFieldname(),
-//             $additionalWizardConf,
-//             $this->formName,[],1
-//         );
+
+
+        if($this->data->hasDirtyState()) {
+            $out .= '<div class="imagemap_wiz_message" style="display:none;width:170px;height:70px;padding:20px 40px 10px 40px;position:absolute;z-index:999;background: url('.$this->getTplSubpath().'img/form-tooltip.png) no-repeat;">';
+            $this->getLL('form.is_dirty',1);
+            $out .= '<div class="imagemap_wiz_message_close" style="display:block;position:absolute;right:15px;top:15px;cursor:pointer">[x]</div></div>';
+        }
+
+
+        $out .= '
+    <script type="text/javascript">
+    $(document).ready(function(){
+        canvasObject = new previewCanvasClass();
+        canvasObject.init("'. $this->getId().'-canvas","'. $this->data->getThumbnailScale('previewImageMaxWH',200) .'");
+        '. $existingFields .'
+        jQuery(".imagemap_wiz_message").css({top: (canvasObject.getMaxH()/2-35)+"px", left: "20px"}).animate({left: "60px",opacity: "show"}, 750).animate({left: "60px"}, 6000).animate({left: "20px", opacity: "hide"}, 750);
+        jQuery(".imagemap_wiz_message_close").click(function() {
+            jQuery(".imagemap_wiz_message").animate({left: "20px", opacity: "hide"}, {duration:250, queue:false});
+        });
+    });
+    </script>
+    <input type="hidden" name="'. $this->formName.'" value="'. htmlspecialchars($this->data->getCurrentData()).'" />
+';
+
         $out .= '</div>';
 
         return $out;

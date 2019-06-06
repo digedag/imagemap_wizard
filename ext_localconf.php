@@ -1,14 +1,26 @@
 <?php
 
+
 if (TYPO3_MODE=='BE') {
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser']['tx_imagemapwizard'] = "EXT:imagemap_wizard/classes/class.tx_imagemapwizard_softrefproc.php:&tx_imagemapwizard_softrefproc";
     //$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['tx_imagemapwizard_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'classes/class.tx_imagemapwizard_wizicon.php';
 
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][] = [
-	    'nodename' => 'imagemap',
+	    'nodeName' => 'sys25imagemap',
 	    'priority' => 1,
-	    'class' => '',
+	    'class' => \Sys25\ImageMapWizard\Form\ImageMapElement::class,
 	];
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][] = [
+	    'nodeName' => 'wizard_sys25imagemap',
+	    'priority' => 1,
+	    'class' => \Sys25\ImageMapWizard\Form\ImageMapWizardController::class,
+	];
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][] = [
+	    'nodeName' => 'popup_sys25imagemap',
+	    'priority' => 1,
+	    'class' => \Sys25\ImageMapWizard\Form\ImageMapPopup::class,
+	];
+
 }
 
 	$typoscript = '
