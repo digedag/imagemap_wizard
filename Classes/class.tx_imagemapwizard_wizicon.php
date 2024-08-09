@@ -35,7 +35,7 @@ class tx_imagemapwizard_wizicon {
 		$LL = $this->includeLocalLang();
 
 		$newWizardItem['common_imagemap'] = array(
-			'icon' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('imagemap_wizard') . 'tt_content_imagemap.gif',
+			'icon' => 'EXT:imagemap_wizard/tt_content_imagemap.gif',
 			'title' => $GLOBALS['LANG']->getLLL('imagemap.title', $LL),
 			'description' => $GLOBALS['LANG']->getLLL('imagemap.description', $LL),
 			'tt_content_defValues.' => array(
