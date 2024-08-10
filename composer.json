@@ -34,5 +34,12 @@
             "Classes/"
         ],
         "psr-4": {"Sys25\\ImageMapWizard\\" : "Classes"}
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "extension-key": "imagemap_wizard",
+            "web-dir": ".Build/Web"
+      }
     }
 }
