@@ -33,11 +33,19 @@ $tempColumns = array (
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("tt_content",$tempColumns,1);
 
-$imwizardConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['imagemap_wizard']);
+$imwizardConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['imagemap_wizard'] ?? '');
 
 $GLOBALS['TCA']['tt_content']['types']['imagemap_wizard'] = $GLOBALS['TCA']['tt_content']['types']['image'];
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_content','tx_imagemapwizard_links', ($imwizardConf['allTTCtypes'] ? '' : 'imagemap_wizard') ,'after:image');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+    'tt_content',
+    'tx_imagemapwizard_links', 
+    (($imwizardConf['allTTCtypes'] ?? false) ? '' : 'imagemap_wizard'),
+    'after:image'
+);
 // CSH context sensitive help
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tt_content','EXT:imagemap_wizard/locallang_csh_ttc.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
+    'tt_content',
+    'EXT:imagemap_wizard/locallang_csh_ttc.xml'
+);
 
 
