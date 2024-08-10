@@ -2,6 +2,7 @@
 
 
 if (TYPO3_MODE=='BE') {
+	$_EXTKEY = 'imagemap_wizard';
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser']['tx_imagemapwizard'] = "EXT:imagemap_wizard/classes/class.tx_imagemapwizard_softrefproc.php:&tx_imagemapwizard_softrefproc";
     //$GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses']['tx_imagemapwizard_wizicon'] = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY).'classes/class.tx_imagemapwizard_wizicon.php';
 
@@ -69,5 +70,3 @@ if (TYPO3_MODE=='BE') {
 		}
 		templavoila.wizards.newContentElement.wizardItems.common.show := addToList(imagemap)
 	');
-
-?>
