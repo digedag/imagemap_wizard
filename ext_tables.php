@@ -7,10 +7,10 @@ if (Sys25\RnBase\Utility\Environment::isBackend()) {
 }
 
 $icons = [
-	'redo' => 'EXT:imagemap_wizard/res/arrow_redo.png',
-	'link' => 'EXT:imagemap_wizard/res/link_edit.png',
-	'zoomin' => 'EXT:imagemap_wizard/res/magnifier_zoom_in.png',
-	'zoomout' => 'EXT:imagemap_wizard/res/magnifier_zoom_out.png',
+	'redo' => 'EXT:imagemap_wizard/Resources/Public/Icons/arrow_redo.png',
+	'link' => 'EXT:imagemap_wizard/Resources/Public/Icons/link_edit.png',
+	'zoomin' => 'EXT:imagemap_wizard/Resources/Public/Icons/magnifier_zoom_in.png',
+	'zoomout' => 'EXT:imagemap_wizard/Resources/Public/Icons/magnifier_zoom_out.png',
 ];
 
 

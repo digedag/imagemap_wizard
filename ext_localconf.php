@@ -54,7 +54,7 @@ if (Sys25\RnBase\Utility\Environment::isBackend()) {
 
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 		mod.wizards.newContentElement.wizardItems.common.elements.imagemap {
-			icon = EXT:imagemap_wizard/tt_content_imagemap.gif
+			icon = EXT:imagemap_wizard/Resources/Public/Icons/tt_content_imagemap.gif
 			title = LLL:EXT:imagemap_wizard/locallang.xml:imagemap.title
 			description = LLL:EXT:imagemap_wizard/locallang.xml:imagemap.description
 			tt_content_defValues {
@@ -64,7 +64,7 @@ if (Sys25\RnBase\Utility\Environment::isBackend()) {
 		mod.wizards.newContentElement.wizardItems.common.show := addToList(imagemap)
 
 		templavoila.wizards.newContentElement.wizardItems.common.elements.imagemap {
-			icon = EXT:imagemap_wizard/tt_content_imagemap.gif
+			icon = EXT:imagemap_wizard/Resources/Public/Icons/tt_content_imagemap.gif
 			title = LLL:EXT:imagemap_wizard/locallang.xml:imagemap.title
 			description = LLL:EXT:imagemap_wizard/locallang.xml:imagemap.description
 			tt_content_defValues {
