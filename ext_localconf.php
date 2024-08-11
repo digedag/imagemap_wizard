@@ -1,7 +1,8 @@
 <?php
 
 
-if (TYPO3_MODE=='BE') {
+if (Sys25\RnBase\Utility\Environment::isBackend()) {
+
 	$_EXTKEY = 'imagemap_wizard';
 	// Hier knallt der DI-Container weg. Das geht so nicht mehr.
 //	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser']['tx_imagemapwizard'] = "tx_imagemapwizard_softrefproc";
